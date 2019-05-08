@@ -109,6 +109,25 @@ void deleteNode(struct Node **head_ref, int position)
     //link the current node to the node after the one you deleted
     temp->next = next;
 }
+
+static void reverse(struct Node** head_ref)
+{
+    struct Node * previous = NULL;
+    struct Node * current = *head_ref;
+    struct Node * next = NULL;
+
+    while (current != NULL)
+    {
+        //initialize nodes to store and change list
+        next = current -> next;
+        current -> next = previous;
+        previous = current;
+        current = next;
+    } 
+
+    *head_ref = previous; 
+}
+
 int main()
 {
     struct Node* head = NULL;
@@ -119,6 +138,8 @@ int main()
     push(&head, 5);
     printList(head);
     deleteNode(&head, 3);
+    printList(head);
+    reverse(&head);
     printList(head);
     deleteList(&head); 
     return 0;
