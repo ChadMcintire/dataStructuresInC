@@ -128,6 +128,60 @@ static void reverse(struct Node** head_ref)
     *head_ref = previous; 
 }
 
+// Function to insert a given node in a sorted linked list 
+void sortedInsert(struct Node**, struct Node*); 
+  
+// function to sort a singly linked list using insertion sort 
+void insertionSort(struct Node **head_ref) 
+{ 
+    // Initialize sorted linked list 
+    struct Node *sorted = NULL; 
+  
+    // Traverse the given linked list and insert every 
+    // node to sorted 
+    struct Node *current = *head_ref; 
+    while (current != NULL) 
+    { 
+        // Store next for next iteration 
+        struct Node *next = current->next; 
+  
+        // insert current in sorted linked list 
+        sortedInsert(&sorted, current); 
+  
+        // Update current 
+        current = next; 
+    } 
+  
+    // Update head_ref to point to sorted linked list 
+    *head_ref = sorted; 
+} 
+  
+/* function to insert a new_node in a list. Note that this 
+  function expects a pointer to head_ref as this can modify the 
+  head of the input linked list (similar to push())*/
+void sortedInsert(struct Node** head_ref, struct Node* new_node) 
+{ 
+    struct Node* current; 
+    /* Special case for the head end */
+    if (*head_ref == NULL || (*head_ref)->data >= new_node->data) 
+    { 
+        new_node->next = *head_ref; 
+        *head_ref = new_node; 
+    } 
+    else
+    { 
+        /* Locate the node before the point of insertion */
+        current = *head_ref; 
+        while (current->next!=NULL && 
+               current->next->data < new_node->data) 
+        { 
+            current = current->next; 
+        } 
+        new_node->next = current->next; 
+        current->next = new_node; 
+    } 
+} 
+
 int main()
 {
     struct Node* head = NULL;
@@ -136,6 +190,8 @@ int main()
     push(&head, 3);
     push(&head, 4);
     push(&head, 5);
+    printList(head);
+    insertionSort(&head); 
     printList(head);
     deleteNode(&head, 3);
     printList(head);
